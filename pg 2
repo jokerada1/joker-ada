@@ -1,0 +1,80 @@
+import math
+
+class RecurrenceSolver:
+    
+    @staticmethod
+    def main():
+        print("Solving Recurrence Relation: T(n) = 2T(n/2) + n\n")
+        
+        print("Using Substitution Method:")
+        RecurrenceSolver.solve_by_substitution()
+        
+        print("\nUsing Recurrence Tree Method:")
+        RecurrenceSolver.solve_by_recurrence_tree()
+        
+        print("\nUsing Master Method:")
+        RecurrenceSolver.solve_by_master_method()
+
+    @staticmethod
+    def solve_by_substitution():
+        print("1. Assume T(n) = cn log n for some constant c.")
+        print("2. Substitute into the recurrence:")
+        print("   T(n) = 2T(n/2) + n")
+        print("   T(n) = 2[c(n/2) log(n/2)] + n")
+        print("   T(n) = cn log(n) - cn + n")
+        print("   Ignore lower-order terms: T(n) ≈ cn log(n).")
+        print("Final Result: T(n) = O(n log n).")
+
+    @staticmethod
+    def solve_by_recurrence_tree():
+        print("1. Expand the recurrence into a tree:")
+        print("   At level 0: n work")
+        print("   At level 1: 2 * (n/2) work")
+        print("   At level 2: 4 * (n/4) work")
+        print("   ...")
+        print("2. Total work at each level is n.")
+        print("   Number of levels = log(n).")
+        print("3. Total work = n * log(n).")
+        print("Final Result: T(n) = O(n log n).")
+
+    @staticmethod
+    def solve_by_master_method():
+        print("1. Compare with the standard form T(n) = aT(n/b) + f(n).")
+        print("   Here: a = 2, b = 2, f(n) = n")
+        print("2. Calculate log_b(a): log(2)/log(2) = 1.")
+        print("3. Compare a with b^d (where d = 1):")
+        print("   Since a = b^d, we apply the second case of the master theorem.")
+        print("4. The result is: T(n) = O(n log n).")
+
+# Running the main method to display the results
+RecurrenceSolver.main()
+Output:
+Solving Recurrence Relation: T(n) = 2T(n/2) + n
+
+Using Substitution Method:
+1. Assume T(n) = cn log n for some constant c.
+2. Substitute into the recurrence:
+   T(n) = 2T(n/2) + n
+   T(n) = 2[c(n/2) log(n/2)] + n
+   T(n) = cn log(n) - cn + n
+   Ignore lower-order terms: T(n) ≈ cn log(n).
+Final Result: T(n) = O(n log n).
+
+Using Recurrence Tree Method:
+1. Expand the recurrence into a tree:
+   At level 0: n work
+   At level 1: 2 * (n/2) work
+   At level 2: 4 * (n/4) work
+   ...
+2. Total work at each level is n.
+   Number of levels = log(n).
+3. Total work = n * log(n).
+Final Result: T(n) = O(n log n).
+
+Using Master Method:
+1. Compare with the standard form T(n) = aT(n/b) + f(n).
+   Here: a = 2, b = 2, f(n) = n
+2. Calculate log_b(a): log(2)/log(2) = 1.
+3. Compare a with b^d (where d = 1):
+   Since a = b^d, we apply the second case of the master theorem.
+4. The result is: T(n) = O(n log n)
