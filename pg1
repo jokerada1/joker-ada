@@ -1,15 +1,10 @@
 import time
-import random
-import math
 
-# Linear Complexity (O(n)): A function that iterates through a list once.
+# Linear Complexity (O(n))
 def linear_function(n):
-    total = 0
-    for i in range(n):
-        total += i
-    return total
+    return sum(range(n))
 
-# Quadratic Complexity (O(n^2)): A function with two nested loops.
+# Quadratic Complexity (O(n^2))
 def quadratic_function(n):
     total = 0
     for i in range(n):
@@ -17,7 +12,7 @@ def quadratic_function(n):
             total += i * j
     return total
 
-# Logarithmic Complexity (O(log n)): A function that divides the problem size in half each time.
+# Logarithmic Complexity (O(log n))
 def logarithmic_function(n):
     count = 0
     while n > 1:
@@ -25,24 +20,30 @@ def logarithmic_function(n):
         count += 1
     return count
 
-# Function to measure the time taken by each algorithm
-def time_function(func, n):
-    start_time = time.time()
-    func(n)
-    end_time = time.time()
-    return end_time - start_time
+# Function to measure the time taken by each algorithm (averaged over 3 runs)
+def time_function(func, n, runs=3):
+    times = []
+    for _ in range(runs):
+        start_time = time.time()
+        func(n)
+        end_time = time.time()
+        times.append(end_time - start_time)
+    return sum(times) / runs  # Return the average time
 
-# Testing the functions with different input sizes and analyzing the performance
+# Testing performance
 def analyze_performance():
-    sizes = [10, 100, 1000, 5000, 10000]
+    sizes = [10, 100, 500, 1000, 2000]  # Adjusted sizes for practical execution
     print(f"{'Size':<10}{'Linear (O(n))':<20}{'Quadratic (O(n^2))':<25}{'Logarithmic (O(log n))':<30}")
-    
+
     for size in sizes:
         linear_time = time_function(linear_function, size)
-        quadratic_time = time_function(quadratic_function, size)
+        quadratic_time = time_function(quadratic_function, size) if size <= 1000 else "Too Slow"
         logarithmic_time = time_function(logarithmic_function, size)
-        
-        print(f"{size:<10}{linear_time:<20}{quadratic_time:<25}{logarithmic_time:<30}")
+
+        print(f"{size:<10}{linear_time:<20.6f}{quadratic_time:<25}{logarithmic_time:<30.6f}")
+
+# Run analysis
+analyze_performance()
 Output:
 # Run the performance analysis
 analyze_performance()
