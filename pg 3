@@ -1,0 +1,134 @@
+class Edge:
+    def _init_(self, src, dest, weight):
+        self.src = src
+        self.dest = dest
+        self.weight = weight
+
+class Graph:
+    def _init_(self, vertices):
+        self.vertices = vertices
+        self.edges = []
+
+    def add_edge(self, src, dest, weight):
+        self.edges.append(Edge(src, dest, weight))
+
+# Bellman-Ford Algorithm
+def bellman_ford(graph, src):
+    print("\nBellman-Ford Algorithm:")
+    V = graph.vertices
+    dist = [float('inf')] * V
+    dist[src] = 0
+
+    # Relax edges |V| - 1 times
+    for _ in range(V - 1):
+        for edge in graph.edges:
+            if dist[edge.src] != float('inf') and dist[edge.src] + edge.weight < dist[edge.dest]:
+                dist[edge.dest] = dist[edge.src] + edge.weight
+
+    # Check for negative-weight cycles
+    for edge in graph.edges:
+        if dist[edge.src] != float('inf') and dist[edge.src] + edge.weight < dist[edge.dest]:
+            print("Graph contains a negative-weight cycle!")
+            return
+
+    print(f"Distances from source {src}: {dist}")
+
+# Dijkstra's Algorithm
+def dijkstra(graph, src):
+    print("\nDijkstra's Algorithm:")
+    V = graph.vertices
+    dist = [float('inf')] * V
+    visited = [False] * V
+    dist[src] = 0
+    pq = [(0, src)]  # Min-heap (distance, vertex)
+
+    while pq:
+        d, u = heapq.heappop(pq)
+        if visited[u]:
+            continue
+        visited[u] = True
+
+        for edge in graph.edges:
+            if edge.src == u:
+                v = edge.dest
+                if dist[u] + edge.weight < dist[v]:
+                    dist[v] = dist[u] + edge.weight
+                    heapq.heappush(pq, (dist[v], v))
+
+    print(f"Distances from source {src}: {dist}")
+
+# Johnson's Algorithm
+def johnson(graph):
+    print("\nJohnson's Algorithm:")
+
+    # Step 1: Add a new vertex with zero-weight edges to all other vertices
+    temp_graph = Graph(graph.vertices + 1)
+    temp_graph.edges.extend(graph.edges)
+    new_vertex = graph.vertices
+
+    for i in range(graph.vertices):
+        temp_graph.add_edge(new_vertex, i, 0)
+
+    # Step 2: Use Bellman-Ford to calculate h values
+    h = [float('inf')] * temp_graph.vertices
+    h[new_vertex] = 0
+
+    for _ in range(temp_graph.vertices - 1):
+        for edge in temp_graph.edges:
+            if h[edge.src] != float('inf') and h[edge.src] + edge.weight < h[edge.dest]:
+                h[edge.dest] = h[edge.src] + edge.weight
+
+    # Check for negative-weight cycles
+    for edge in temp_graph.edges:
+        if h[edge.src] != float('inf') and h[edge.src] + edge.weight < h[edge.dest]:
+            print("Graph contains a negative-weight cycle!")
+            return
+
+    # Step 3: Reweight the original graph
+    for edge in graph.edges:
+        edge.weight += h[edge.src] - h[edge.dest]
+
+    # Step 4: Run Dijkstra's Algorithm for each vertex
+    for i in range(graph.vertices):
+        print(f"Shortest paths from vertex {i}:")
+        dijkstra(graph, i)
+
+# Main function
+def main():
+Output:
+    graph = Graph(4)
+    graph.add_edge(0, 1, 1)
+    graph.add_edge(1, 2, 3)
+    graph.add_edge(2, 3, 2)
+    graph.add_edge(3, 1, 4)
+
+    print("Graph created.")
+
+    bellman_ford(graph, 0)
+    dijkstra(graph, 0)
+    johnson(graph)
+
+# Run the program
+if  __name__ == "_main_":
+    main()
+Graph created.
+
+Bellman-Ford Algorithm:
+Distances from source 0: [0, 1, 4, 6]
+
+Dijkstra's Algorithm:
+Distances from source 0: [0, 1, 4, 6]
+
+Johnson's Algorithm:
+Shortest paths from vertex 0:
+Dijkstra's Algorithm:
+Distances from source 0: [0, 1, 4, 6]
+Shortest paths from vertex 1:
+Dijkstra's Algorithm:
+Distances from source 1: [inf, 0, 3, 5]
+Shortest paths from vertex 2:
+Dijkstra's Algorithm:
+Distances from source 2: [inf, 6, 0, 2]
+Shortest paths from vertex 3:
+Dijkstra's Algorithm:
+Distances from source 3: [inf, 4, 7, 0]
