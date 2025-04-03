@@ -1,0 +1,38 @@
+def naive_string(text, pattern):
+    n = len(text)
+    m = len(pattern)
+    for i in range(n - m + 1):
+        if text[i : i + m] == pattern :
+            print("pattern is found at index :",{i})
+def main():
+    text = "ABsABC"
+    pattern = "ABC"
+    naive_string(text,pattern)
+    rabin(text,pattern)
+
+def rabin(text,pattern,d = 256, q = 101):
+    n = len(text)
+    m = len(pattern)
+    t = 0
+    p = 0
+    h = 1
+    for i in range(m  - 1):
+        h = (h * d) % q
+    for i in range(m):
+        p = (d * p + ord(pattern[i])) % q
+        t = (d * t + ord(text[i])) % q
+    for i in range(n - m + 1):
+        if p == t:
+            if text[i : i + m] == pattern :
+                print("pattern is found at index :",{i})
+        if i <= n - m:
+            t = (d * (t - ord(text[i]) * h) + ord(text[i + m])) % q
+        if t <= n - m:
+            t += q
+            
+            
+
+
+if __name__ == "__main__":
+    main()
+
