@@ -1,0 +1,20 @@
+import random
+def monte(iter = 1000000):
+    c_point = 0
+    for _ in range(iter):
+        x, y = random.uniform(-1,1), random.uniform(-1,1)
+        if x**2 + y**2 <= 1:
+            c_point += 1
+    return 4 * c_point / iter
+def las(arr):
+    if not arr:
+        return None
+    while True:
+        cand = random.choice(arr)
+        if all(cand <= x for x in arr):
+            return cand
+
+arr= [42, 5, 12, 89, 3, 7, 18, 3]
+
+print("monte:",monte(1000000))
+print("las:",las(arr))
